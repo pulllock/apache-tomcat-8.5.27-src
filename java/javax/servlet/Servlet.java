@@ -64,6 +64,8 @@ public interface Servlet {
      * The servlet container calls the <code>init</code> method exactly once
      * after instantiating the servlet. The <code>init</code> method must
      * complete successfully before the servlet can receive any requests.
+     * init方法在servlet初始化之后立刻就被调用。servlet接受任何请求之前，init方法
+     * 必须被成功调用。
      *
      * <p>
      * The servlet container cannot place the servlet into service if the
@@ -72,11 +74,14 @@ public interface Servlet {
      * <li>Throws a <code>ServletException</code>
      * <li>Does not return within a time period defined by the Web server
      * </ol>
+     * 如果init方法抛出了异常或者在web 服务器规定的时间内没有返回，servlet容器就不会让
+     * servlet开始服务
      *
      *
      * @param config
      *            a <code>ServletConfig</code> object containing the servlet's
      *            configuration and initialization parameters
+     *            ServletConfig中包含servlet的配置和初始化参数
      *
      * @exception ServletException
      *                if an exception has occurred that interferes with the
@@ -84,6 +89,8 @@ public interface Servlet {
      *
      * @see UnavailableException
      * @see #getServletConfig
+     *
+     *
      */
     public void init(ServletConfig config) throws ServletException;
 
@@ -92,6 +99,8 @@ public interface Servlet {
      * Returns a {@link ServletConfig} object, which contains initialization and
      * startup parameters for this servlet. The <code>ServletConfig</code>
      * object returned is the one passed to the <code>init</code> method.
+     * 返回ServletConfig对象，包含servlet中的初始化和启动参数。
+     * 这里返回的ServletConfig就是init方法中传入的那个参数。
      *
      * <p>
      * Implementations of this interface are responsible for storing the
@@ -109,10 +118,12 @@ public interface Servlet {
     /**
      * Called by the servlet container to allow the servlet to respond to a
      * request.
+     * Servlet容器调用该方法来处理请求。
      *
      * <p>
      * This method is only called after the servlet's <code>init()</code> method
      * has completed successfully.
+     * init方法成功之后才调用service方法。
      *
      * <p>
      * The status code of the response always should be set for a servlet that
@@ -129,6 +140,8 @@ public interface Servlet {
      * ="http://java.sun.com/Series/Tutorial/java/threads/multithreaded.html">
      * the Java tutorial on multi-threaded programming</a>.
      *
+     * Servlet在多线程的容器中可以并发的处理多个请求。开发者必须注意同步的访问任何可共享的资源，
+     * 比如文件，网络连接，servlet的类和实例变量。
      *
      * @param req
      *            the <code>ServletRequest</code> object that contains the
@@ -151,7 +164,7 @@ public interface Servlet {
     /**
      * Returns information about the servlet, such as author, version, and
      * copyright.
-     *
+     * 返回servlet的相关信息，比如作者，版本号，版权等
      * <p>
      * The string that this method returns should be plain text and not markup
      * of any kind (such as HTML, XML, etc.).
@@ -167,7 +180,7 @@ public interface Servlet {
      * after a timeout period has passed. After the servlet container calls this
      * method, it will not call the <code>service</code> method again on this
      * servlet.
-     *
+     * 销毁方法，被servlet容器在销毁servlet的时候调用，用来释放一些资源。
      * <p>
      * This method gives the servlet an opportunity to clean up any resources
      * that are being held (for example, memory, file handles, threads) and make

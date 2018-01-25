@@ -21,6 +21,8 @@ import java.util.Enumeration;
 /**
  * A servlet configuration object used by a servlet container to pass
  * information to a servlet during initialization.
+ * servlet配置对象，在servlet初始化的时候传递一些信息
+ * 在web.xml中定义servlet时，init-param标签配置的参数就是通过ServletConfig来保存的。
  */
 public interface ServletConfig {
 
@@ -41,6 +43,8 @@ public interface ServletConfig {
      * @return a {@link ServletContext} object, used by the caller to interact
      *         with its servlet container
      * @see ServletContext
+     *
+     * 返回ServletContext
      */
     public ServletContext getServletContext();
 
@@ -54,6 +58,7 @@ public interface ServletConfig {
      *            initialization parameter
      * @return a <code>String</code> containing the value of the initialization
      *         parameter
+     * 获取init-param配置的参数
      */
     public String getInitParameter(String name);
 
@@ -64,6 +69,7 @@ public interface ServletConfig {
      *
      * @return an <code>Enumeration</code> of <code>String</code> objects
      *         containing the names of the servlet's initialization parameters
+     * 获取所有的init-param的名字集合
      */
     public Enumeration<String> getInitParameterNames();
 }

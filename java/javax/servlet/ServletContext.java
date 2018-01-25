@@ -30,11 +30,15 @@ import javax.servlet.descriptor.JspConfigDescriptor;
  * Defines a set of methods that a servlet uses to communicate with its servlet
  * container, for example, to get the MIME type of a file, dispatch requests, or
  * write to a log file.
+ * 定义了一些方法的集合，servlet可以用这些方法和他的servlet容器进行通信，比如：
+ * 获取文件的MIME类型，派发请求，写日志
  * <p>
  * There is one context per "web application" per Java Virtual Machine. (A
  * "web application" is a collection of servlets and content installed under a
  * specific subset of the server's URL namespace such as <code>/catalog</code>
  * and possibly installed via a <code>.war</code> file.)
+ * 一个JVM中的一个web应用只有一个Context。
+ * web应用是一些servlet集合和一个context来组成。
  * <p>
  * In the case of a web application marked "distributed" in its deployment
  * descriptor, there will be one context instance for each virtual machine. In
