@@ -22,6 +22,7 @@ import java.util.Enumeration;
 /**
  * Defines a generic, protocol-independent servlet. To write an HTTP servlet for
  * use on the Web, extend {@link javax.servlet.http.HttpServlet} instead.
+ * 通用的，协议独立的Servlet。
  * <p>
  * <code>GenericServlet</code> implements the <code>Servlet</code> and
  * <code>ServletConfig</code> interfaces. <code>GenericServlet</code> may be
@@ -36,6 +37,11 @@ import java.util.Enumeration;
  * <p>
  * To write a generic servlet, you need only override the abstract
  * <code>service</code> method.
+ *
+ * Servlet的默认实现
+ * 实现了ServletConfig接口，可以直接调用ServletConfig中的方法
+ * 提供了无参的init方法
+ * 提供了log方法
  */
 public abstract class GenericServlet implements Servlet, ServletConfig,
         java.io.Serializable {
@@ -74,6 +80,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *            initialization parameter
      * @return String a <code>String</code> containing the value of the
      *         initialization parameter
+     *         获取ServletConfig中保存的init-param
      */
     @Override
     public String getInitParameter(String name) {
@@ -102,6 +109,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *
      * @return ServletConfig the <code>ServletConfig</code> object that
      *         initialized this servlet
+     * 返回servlet的ServletConfig对象
      */
     @Override
     public ServletConfig getServletConfig() {
@@ -117,6 +125,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *
      * @return ServletContext the <code>ServletContext</code> object passed to
      *         this servlet by the <code>init</code> method
+     * 获取ServletContext
      */
     @Override
     public ServletContext getServletContext() {
@@ -130,6 +139,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * {@link Servlet#getServletInfo}.
      *
      * @return String information about this servlet, by default an empty string
+     * 返回servlet信息，默认返回空字符串
      */
     @Override
     public String getServletInfo() {
@@ -151,6 +161,8 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *                if an exception occurs that interrupts the servlet's
      *                normal operation
      * @see UnavailableException
+     * init方法的实现，config赋值给内部变量，调用无参init方法
+     * 子类覆盖改方法时，需要调用super.init(config)方法
      */
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -161,6 +173,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
     /**
      * A convenience method which can be overridden so that there's no need to
      * call <code>super.init(config)</code>.
+     * 子类覆盖该方法，可以不用调用super.init(config)方法
      * <p>
      * Instead of overriding {@link #init(ServletConfig)}, simply override this
      * method and it will be called by
@@ -183,6 +196,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * @param msg
      *            a <code>String</code> specifying the message to be written to
      *            the log file
+     * 记录日志
      */
     public void log(String msg) {
         getServletContext().log(getServletName() + ": " + msg);
@@ -197,6 +211,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *            a <code>String</code> that describes the error or exception
      * @param t
      *            the <code>java.lang.Throwable</code> error or exception
+     * 记录异常
      */
     public void log(String message, Throwable t) {
         getServletContext().log(getServletName() + ": " + message, t);
@@ -220,6 +235,8 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *                normal operation occurred
      * @exception IOException
      *                if an input or output exception occurs
+     * 处理请求
+     * 子类需要覆盖改方法
      */
     @Override
     public abstract void service(ServletRequest req, ServletResponse res)
@@ -230,6 +247,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * {@link ServletConfig#getServletName}.
      *
      * @return the name of this servlet instance
+     * 返回servlet名字
      */
     @Override
     public String getServletName() {
