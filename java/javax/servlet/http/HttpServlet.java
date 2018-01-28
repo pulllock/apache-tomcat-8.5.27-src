@@ -198,6 +198,7 @@ public abstract class HttpServlet extends GenericServlet {
      *              object was last modified, in milliseconds
      *              since midnight, January 1, 1970 GMT, or
      *              -1 if the time is not known
+     * 获取HttpServletRequest对象的最后修改时间
      */
     protected long getLastModified(HttpServletRequest req) {
         return -1;
@@ -475,6 +476,7 @@ public abstract class HttpServlet extends GenericServlet {
      *
      * @exception ServletException  if the request for the
      *                                  OPTIONS cannot be handled
+     * 返回所有支持的处理类型的集合
      */
     protected void doOptions(HttpServletRequest req,
             HttpServletResponse resp)
@@ -565,6 +567,7 @@ public abstract class HttpServlet extends GenericServlet {
      *
      * @exception ServletException  if the request for the
      *                                  TRACE cannot be handled
+     * 用来远程诊断服务器的，将接收到的header原样返回
      */
     protected void doTrace(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException
@@ -621,17 +624,21 @@ public abstract class HttpServlet extends GenericServlet {
      *                                  cannot be handled
      *
      * @see javax.servlet.Servlet#service
+     *
+     * 接受标准http请求，将请求转发到对应方法上去
      */
     protected void service(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
-
+        // 请求类型
         String method = req.getMethod();
-
+        // get方法
         if (method.equals(METHOD_GET)) {
             long lastModified = getLastModified(req);
+            // -1 表示servlet不支持if-modified-since
             if (lastModified == -1) {
                 // servlet doesn't support if-modified-since, no reason
                 // to go through further expensive logic
+                // 直接调用doGet方法
                 doGet(req, resp);
             } else {
                 long ifModifiedSince;
@@ -648,28 +655,30 @@ public abstract class HttpServlet extends GenericServlet {
                     maybeSetLastModified(resp, lastModified);
                     doGet(req, resp);
                 } else {
+                    // 没有过期，返回304，使用缓存
                     resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                 }
             }
 
-        } else if (method.equals(METHOD_HEAD)) {
+        } else if (method.equals(METHOD_HEAD)) { // HEAD方法
             long lastModified = getLastModified(req);
             maybeSetLastModified(resp, lastModified);
+            // doHead调用doGet方法，返回空body的Response
             doHead(req, resp);
 
-        } else if (method.equals(METHOD_POST)) {
+        } else if (method.equals(METHOD_POST)) { // post方法
             doPost(req, resp);
 
-        } else if (method.equals(METHOD_PUT)) {
+        } else if (method.equals(METHOD_PUT)) { // put方法
             doPut(req, resp);
 
-        } else if (method.equals(METHOD_DELETE)) {
+        } else if (method.equals(METHOD_DELETE)) { //delete方法
             doDelete(req, resp);
 
-        } else if (method.equals(METHOD_OPTIONS)) {
+        } else if (method.equals(METHOD_OPTIONS)) { // options方法
             doOptions(req,resp);
 
-        } else if (method.equals(METHOD_TRACE)) {
+        } else if (method.equals(METHOD_TRACE)) { // trace方法
             doTrace(req,resp);
 
         } else {
