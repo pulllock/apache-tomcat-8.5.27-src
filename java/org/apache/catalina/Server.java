@@ -29,11 +29,15 @@ import org.apache.catalina.startup.Catalina;
  * the servlet container as a whole.  A <code>Server</code> may contain
  * one or more <code>Services</code>, and the top level set of naming
  * resources.
+ *
+ * Server代表整个服务器，是tomcat中最顶层的容器，Server中至少包含一个Service
  * <p>
  * Normally, an implementation of this interface will also implement
  * <code>Lifecycle</code>, such that when the <code>start()</code> and
  * <code>stop()</code> methods are called, all of the defined
  * <code>Services</code> are also started or stopped.
+ * 通常情况下，该接口的实现也会同时实现Lifecycle接口，当start方法或者stop方法被调用时，
+ * 该Server下的Service也同时被start或者stop
  * <p>
  * In between, the implementation must open a server socket on the port number
  * specified by the <code>port</code> property.  When a connection is accepted,
