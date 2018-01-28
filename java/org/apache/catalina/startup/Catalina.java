@@ -66,6 +66,8 @@ import org.xml.sax.SAXParseException;
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
+ *
+ * Catalina是整个tomcat的管理类，load start stop三个方法用来管理整个服务器的生命周期
  */
 public class Catalina {
 
@@ -514,6 +516,7 @@ public class Catalina {
 
     /**
      * Start a new server instance.
+     * 根据conf/server.xml文件创建Server，并调用Server的init方法进行初始化
      */
     public void load() {
 
@@ -651,6 +654,7 @@ public class Catalina {
 
     /**
      * Start a new server instance.
+     * 用于启动服务器
      */
     public void start() {
 
@@ -709,6 +713,7 @@ public class Catalina {
 
     /**
      * Stop an existing server instance.
+     * 用于停止服务器
      */
     public void stop() {
 
@@ -752,6 +757,7 @@ public class Catalina {
 
     /**
      * Await and shutdown.
+     * 直接调用Server的await方法，进入一个循环，让主线程不会退出
      */
     public void await() {
 
