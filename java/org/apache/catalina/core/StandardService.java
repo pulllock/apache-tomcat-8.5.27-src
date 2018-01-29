@@ -46,6 +46,8 @@ import org.apache.tomcat.util.res.StringManager;
  * not required.
  *
  * @author Craig R. McClanahan
+ * Service接口的标准实现
+ * 继承自LifecycleMBeanBase，init和start方法也会调用initInternal和startInternal方法
  */
 
 public class StandardService extends LifecycleMBeanBase implements Service {
@@ -432,6 +434,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
         mapperListener.start();
 
         // Start our defined Connectors second
+        // 循环调用Connector的start
         synchronized (connectorsLock) {
             for (Connector connector: connectors) {
                 try {
@@ -532,6 +535,7 @@ public class StandardService extends LifecycleMBeanBase implements Service {
         }
 
         // Initialize any Executors
+        // executor用在connectors中管理线程的线程池
         for (Executor executor : findExecutors()) {
             if (executor instanceof JmxEnabled) {
                 ((JmxEnabled) executor).setDomain(getDomain());
@@ -540,9 +544,11 @@ public class StandardService extends LifecycleMBeanBase implements Service {
         }
 
         // Initialize mapper listener
+        // Mapper监听器，可以监听container容器的变化
         mapperListener.init();
 
         // Initialize our defined Connectors
+        // 循环调用Connector的init方法
         synchronized (connectorsLock) {
             for (Connector connector : connectors) {
                 try {

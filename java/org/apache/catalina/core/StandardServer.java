@@ -58,6 +58,10 @@ import org.apache.tomcat.util.res.StringManager;
  * (but not required) when deploying and starting Catalina.
  *
  * @author Craig R. McClanahan
+ * Server接口的默认实现
+ *
+ * 继承了LifecycleMBeanBase，LifecycleMBeanBase继承自LifecycleBase
+ * LifecycleBase定义了init和start方法，这俩方法中又调用initInternal和startInternal方法
  */
 public final class StandardServer extends LifecycleMBeanBase implements Server {
 
@@ -788,6 +792,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         globalNamingResources.start();
 
         // Start our defined Services
+        // 循环调用每个service的start方法
         synchronized (servicesLock) {
             for (int i = 0; i < services.length; i++) {
                 services[i].start();
@@ -871,6 +876,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
             }
         }
         // Initialize our defined Services
+        // 循环调用每个service的init方法进行初始化
         for (int i = 0; i < services.length; i++) {
             services[i].init();
         }
