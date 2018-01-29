@@ -56,9 +56,11 @@ import javax.servlet.ServletResponse;
  * requests by dispatching them to the handler methods
  * for each HTTP request type (the <code>do</code><i>Method</i>
  * methods listed above).
+ * service方法处理标准的HTTP请求，将请求转发到具体的处理方法
  *
  * <p>Likewise, there's almost no reason to override the
  * <code>doOptions</code> and <code>doTrace</code> methods.
+ * 不需要重写doOptions和doTrace方法
  *
  * <p>Servlets typically run on multithreaded servers,
  * so be aware that a servlet must handle concurrent
@@ -71,6 +73,8 @@ import javax.servlet.ServletResponse;
  * <a href="http://java.sun.com/Series/Tutorial/java/threads/multithreaded.html">
  * Java Tutorial on Multithreaded Programming</a> for more
  * information on handling multiple threads in a Java program.
+ *
+ * HTTP协议实现的Servlet基类
  */
 public abstract class HttpServlet extends GenericServlet {
 
@@ -717,6 +721,7 @@ public abstract class HttpServlet extends GenericServlet {
      * Dispatches client requests to the protected
      * <code>service</code> method. There's no need to
      * override this method.
+     * 分发客户端请求到protected service方法，该方法不需要被覆盖
      *
      * @param req   the {@link HttpServletRequest} object that
      *                  contains the request the client made of
@@ -734,6 +739,7 @@ public abstract class HttpServlet extends GenericServlet {
      *                                  be handled
      *
      * @see javax.servlet.Servlet#service
+     * 将request和Response
      */
     @Override
     public void service(ServletRequest req, ServletResponse res)
