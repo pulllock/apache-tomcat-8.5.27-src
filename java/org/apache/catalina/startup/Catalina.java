@@ -655,6 +655,8 @@ public class Catalina {
     /**
      * Start a new server instance.
      * 用于启动服务器
+     * 调用Server的start方法启动服务器
+     * 根据await属性判断是否让程序进入等待状态
      */
     public void start() {
 
