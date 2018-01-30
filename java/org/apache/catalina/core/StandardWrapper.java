@@ -72,6 +72,7 @@ import org.apache.tomcat.util.modeler.Util;
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
+ * Wrapper的标准实现
  */
 @SuppressWarnings("deprecation") // SingleThreadModel
 public class StandardWrapper extends ContainerBase
@@ -1626,6 +1627,7 @@ public class StandardWrapper extends ContainerBase
     protected synchronized void startInternal() throws LifecycleException {
 
         // Send j2ee.state.starting notification
+        // 发送通知，主要用于JMX
         if (this.getObjectName() != null) {
             Notification notification = new Notification("j2ee.state.starting",
                                                         this.getObjectName(),
@@ -1634,8 +1636,10 @@ public class StandardWrapper extends ContainerBase
         }
 
         // Start up this component
+        // 调用父类方法
         super.startInternal();
 
+        // 让Servlet有效
         setAvailable(0L);
 
         // Send j2ee.state.running notification

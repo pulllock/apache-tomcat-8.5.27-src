@@ -143,6 +143,7 @@ import org.apache.tomcat.util.security.PrivilegedSetTccl;
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
+ * Context的标准实现
  */
 public class StandardContext extends ContainerBase
         implements Context, NotificationEmitter {
@@ -5203,6 +5204,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Configure and call application event listeners
+            // 触发listener
             if (ok) {
                 if (!listenerStart()) {
                     log.error(sm.getString("standardContext.listenerFail"));
@@ -5229,6 +5231,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Configure and call application filters
+            // 初始化filter
             if (ok) {
                 if (!filterStart()) {
                     log.error(sm.getString("standardContext.filterFail"));
@@ -5237,6 +5240,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Load and initialize all "load on startup" servlets
+            // 初始化Servlets
             if (ok) {
                 if (!loadOnStartup(findChildren())){
                     log.error(sm.getString("standardContext.servletFail"));

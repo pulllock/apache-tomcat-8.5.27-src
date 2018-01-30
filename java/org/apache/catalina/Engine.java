@@ -39,6 +39,7 @@ package org.apache.catalina;
  * should throw <code>IllegalArgumentException</code>.
  *
  * @author Craig R. McClanahan
+ * 引擎，管理多个站点，一个Service最多只能有一个Engine
  */
 public interface Engine extends Container {
 

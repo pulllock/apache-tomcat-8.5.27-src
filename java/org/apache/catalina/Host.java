@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
  * of Context (representing an individual servlet context).
  *
  * @author Craig R. McClanahan
+ * 表示一个站点或者虚拟主机
  */
 public interface Host extends Container {
 

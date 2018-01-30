@@ -893,6 +893,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     @Override
     protected void initInternal() throws LifecycleException {
+        // 初始化startStopExecutor，用于管理启动和关闭的线程池
         BlockingQueue<Runnable> startStopQueue = new LinkedBlockingQueue<>();
         startStopExecutor = new ThreadPoolExecutor(
                 getStartStopThreadsInternal(),
@@ -917,16 +918,19 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         // Start our subordinate components, if any
         logger = null;
         getLogger();
+        // cluster的start方法调用，cluster用来配置集群
         Cluster cluster = getClusterInternal();
         if (cluster instanceof Lifecycle) {
             ((Lifecycle) cluster).start();
         }
+        // realm的start方法调用，realm用来管理资源的访问权限
         Realm realm = getRealmInternal();
         if (realm instanceof Lifecycle) {
             ((Lifecycle) realm).start();
         }
 
         // Start our child containers, if any
+        // 调用所有子容器的start方法启动子容器
         Container children[] = findChildren();
         List<Future<Void>> results = new ArrayList<>();
         for (int i = 0; i < children.length; i++) {
@@ -949,13 +953,16 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         }
 
         // Start the Valves in our pipeline (including the basic), if any
+        // 调用管道中Value的start方法启动管道
         if (pipeline instanceof Lifecycle)
             ((Lifecycle) pipeline).start();
 
 
+        // 设置状态
         setState(LifecycleState.STARTING);
 
         // Start our thread
+        // 启动后台线程，定时处理一些事情
         threadStart();
 
     }
@@ -1280,6 +1287,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     /**
      * Start the background thread that will periodically check for
      * session timeouts.
+     * 启动后台线程，周期性的做一些事情，比如处理session超时
      */
     protected void threadStart() {
 

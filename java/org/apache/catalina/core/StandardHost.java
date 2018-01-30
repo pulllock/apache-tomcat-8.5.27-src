@@ -51,6 +51,7 @@ import org.apache.tomcat.util.ExceptionUtils;
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
+ * Host接口的标准实现
  */
 public class StandardHost extends ContainerBase implements Host {
 
@@ -846,6 +847,7 @@ public class StandardHost extends ContainerBase implements Host {
     protected synchronized void startInternal() throws LifecycleException {
 
         // Set error report valve
+        // 检查Host的管道中有没有指定的Value，没有就添加
         String errorValve = getErrorReportValveClass();
         if ((errorValve != null) && (!errorValve.equals(""))) {
             try {

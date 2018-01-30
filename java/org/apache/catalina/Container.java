@@ -32,6 +32,7 @@ import org.apache.juli.logging.Log;
  * optionally support a pipeline of Valves that process the request in an
  * order configured at runtime, by implementing the <b>Pipeline</b> interface
  * as well.
+ * Container是可以从客户端接收请求，并返回响应的对象
  * <p>
  * Containers will exist at several conceptual levels within Catalina.  The
  * following examples represent common cases:

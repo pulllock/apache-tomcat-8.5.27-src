@@ -50,6 +50,7 @@ import org.apache.juli.logging.LogFactory;
  * You can set the jvmRoute direct or with the System.property <b>jvmRoute</b>.
  *
  * @author Craig R. McClanahan
+ * Engine接口的标准实现
  */
 public class StandardEngine extends ContainerBase implements Engine {
 

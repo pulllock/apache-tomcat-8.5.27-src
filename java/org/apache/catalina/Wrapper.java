@@ -45,6 +45,7 @@ import javax.servlet.UnavailableException;
  * <code>IllegalArgumentException</code>.
  *
  * @author Craig R. McClanahan
+ * 每个Wrapper封装一个Servlet
  */
 public interface Wrapper extends Container {
 
