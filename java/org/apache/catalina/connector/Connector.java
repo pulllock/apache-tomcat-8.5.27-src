@@ -51,6 +51,18 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
+ *
+ * Connector用于接收请求并将请求封装成Request和Response来具体处理
+ * 底层使用Socket来进行连接
+ *
+ * 具体是使用ProtocolHandler来处理请求的，不同的ProtocolHandler代表不同的连接类型
+ *
+ * Connector类本身主要作用是创建时创建ProtocolHandler，然后在生命周期相关方法中调用
+ * ProtocolHandler的相关生命周期方法。
+ *
+ * Connector使用方法是通过Connector标签配置在conf/server.xml中，Connector是在
+ * Catalina的load方法中根据server.xml文件创建Server对象时创建的。Connector的生
+ * 命周期方法是在Service中调用的。
  */
 public class Connector extends LifecycleMBeanBase  {
 
@@ -71,10 +83,12 @@ public class Connector extends LifecycleMBeanBase  {
     }
 
     public Connector(String protocol) {
+        // 设置协议
         setProtocol(protocol);
         // Instantiate protocol handler
         ProtocolHandler p = null;
         try {
+            // 使用反射生成ProtocolHandler实例，默认是Http11NioProtocol
             Class<?> clazz = Class.forName(protocolHandlerClassName);
             p = (ProtocolHandler) clazz.getConstructor().newInstance();
         } catch (Exception e) {
@@ -966,6 +980,7 @@ public class Connector extends LifecycleMBeanBase  {
         super.initInternal();
 
         // Initialize adapter
+        // 新建Adapter实例
         adapter = new CoyoteAdapter(this);
         protocolHandler.setAdapter(adapter);
 
@@ -990,6 +1005,7 @@ public class Connector extends LifecycleMBeanBase  {
         }
 
         try {
+            // 调用protocolHandler的init方法初始化
             protocolHandler.init();
         } catch (Exception e) {
             throw new LifecycleException(
@@ -1015,6 +1031,7 @@ public class Connector extends LifecycleMBeanBase  {
         setState(LifecycleState.STARTING);
 
         try {
+            // 调用protocolHandler的start方法启动
             protocolHandler.start();
         } catch (Exception e) {
             throw new LifecycleException(

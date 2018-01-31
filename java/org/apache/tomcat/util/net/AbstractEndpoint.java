@@ -54,6 +54,7 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
  *
  * @author Mladen Turk
  * @author Remy Maucherat
+ * Endpoint用于处理Socket网络连接，实现TCP/IP协议
  */
 public abstract class AbstractEndpoint<S> {
 
@@ -61,6 +62,10 @@ public abstract class AbstractEndpoint<S> {
 
     protected static final StringManager sm = StringManager.getManager(AbstractEndpoint.class);
 
+    /**
+     * Handler用来处理接收到的Socket，内部调用Processor进行处理
+     * @param <S>
+     */
     public static interface Handler<S> {
 
         /**
@@ -128,6 +133,9 @@ public abstract class AbstractEndpoint<S> {
         UNBOUND, BOUND_ON_INIT, BOUND_ON_START
     }
 
+    /**
+     * Acceptor用于监听请求
+     */
     public abstract static class Acceptor implements Runnable {
         public enum AcceptorState {
             NEW, RUNNING, PAUSED, ENDED

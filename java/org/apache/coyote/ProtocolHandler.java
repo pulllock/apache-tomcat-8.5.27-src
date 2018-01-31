@@ -32,6 +32,12 @@ import org.apache.tomcat.util.net.SSLHostConfig;
  * @author Remy Maucherat
  * @author Costin Manolache
  * @see Adapter
+ *
+ * ProtocolHandler用来处理请求，不同的ProtocolHandler代表不同的连接类型
+ * ProtocolHandler有三个非常重要的组件：Endpoint，Processor，Adapter
+ * Endpoint用于处理底层Socket连接，实现TCP/IP协议
+ * Processor用于将Socket封装成Request，实现HTTP协议
+ * Adapter将封装好的Request交给Container进行具体处理，将请求适配到Servlet容器进行具体处理
  */
 public interface ProtocolHandler {
 
