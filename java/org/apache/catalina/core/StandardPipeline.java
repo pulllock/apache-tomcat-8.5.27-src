@@ -177,12 +177,14 @@ public class StandardPipeline extends LifecycleBase
         if (current == null) {
             current = basic;
         }
+        // 遍历所有的Value并调用start方法
         while (current != null) {
             if (current instanceof Lifecycle)
                 ((Lifecycle) current).start();
             current = current.getNext();
         }
 
+        // 设置状态
         setState(LifecycleState.STARTING);
     }
 
