@@ -211,10 +211,13 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
         serverSock.configureBlocking(true); //mimic APR behavior
 
         // Initialize thread count defaults for acceptor, poller
+        // 初始化需要启动acceptor线程的个数，如果为0则改为1
+        // Acceptor用于接收请求，接收到请求后交给Poller处理
         if (acceptorThreadCount == 0) {
             // FIXME: Doesn't seem to work that well with multiple accept threads
             acceptorThreadCount = 1;
         }
+        // 初始化需要启动poller线程的个数
         if (pollerThreadCount <= 0) {
             //minimum one poller thread
             pollerThreadCount = 1;
@@ -222,6 +225,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
         setStopLatch(new CountDownLatch(pollerThreadCount));
 
         // Initialize SSL if needed
+        // 如果需要则初始化ssl
         initialiseSsl();
 
         selectorPool.open();
@@ -245,6 +249,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                     socketProperties.getBufferPool());
 
             // Create worker collection
+            // 创建Executor
             if ( getExecutor() == null ) {
                 createExecutor();
             }
@@ -252,6 +257,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
             initializeConnectionLatch();
 
             // Start poller threads
+            // 启动poller线程
             pollers = new Poller[getPollerThreadCount()];
             for (int i=0; i<pollers.length; i++) {
                 pollers[i] = new Poller();
@@ -261,6 +267,7 @@ public class NioEndpoint extends AbstractJsseEndpoint<NioChannel> {
                 pollerThread.start();
             }
 
+            // 启动Acceptor线程
             startAcceptorThreads();
         }
     }
