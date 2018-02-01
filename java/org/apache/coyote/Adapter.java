@@ -44,6 +44,8 @@ public interface Adapter {
      *  </ul>
      *  Tomcat should be able to handle and log any other exception ( including
      *  runtime exceptions )
+     *  Processor的process方法中会调用service方法来处理请求
+     *  service方法主要是调用Container管道中的invoke方法来处理请求
      */
     public void service(Request req, Response res) throws Exception;
 
