@@ -958,7 +958,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             ((Lifecycle) pipeline).start();
 
 
-        // 设置状态
+        // 设置状态，会触发START_EVENT生命周期事件，HostConfig监听该事件进行处理
         setState(LifecycleState.STARTING);
 
         // Start our thread

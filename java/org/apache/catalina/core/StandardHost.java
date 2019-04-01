@@ -847,7 +847,7 @@ public class StandardHost extends ContainerBase implements Host {
     protected synchronized void startInternal() throws LifecycleException {
 
         // Set error report valve
-        // 检查Host的管道中有没有指定的Value，没有就添加
+        // 添加ErrorReportValue，主要用来输出错误页面
         String errorValve = getErrorReportValveClass();
         if ((errorValve != null) && (!errorValve.equals(""))) {
             try {
@@ -871,6 +871,7 @@ public class StandardHost extends ContainerBase implements Host {
                         errorValve), t);
             }
         }
+        // 调用父类方法启动Host
         super.startInternal();
     }
 
