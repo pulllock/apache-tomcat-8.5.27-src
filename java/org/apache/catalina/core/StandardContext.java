@@ -5103,9 +5103,11 @@ public class StandardContext extends ContainerBase
                 }
 
                 // Notify our interested LifecycleListeners
+                // 发布CONFIGURE_START_EVENT事件，ContextConfig监听该事件完成Servlet的创建
                 fireLifecycleEvent(Lifecycle.CONFIGURE_START_EVENT, null);
 
                 // Start our child containers, if not already started
+                // 子节点启动，就是Wrapper启动
                 for (Container child : findChildren()) {
                     if (!child.getState().isAvailable()) {
                         child.start();
@@ -5191,6 +5193,7 @@ public class StandardContext extends ContainerBase
             mergeParameters();
 
             // Call ServletContainerInitializers
+            // 3.0版本起，可通过ServletContainerInitializer接口支持可编程方式定义的Servlet、Filter以及对应URL映射
             for (Map.Entry<ServletContainerInitializer, Set<Class<?>>> entry :
                 initializers.entrySet()) {
                 try {
@@ -5240,7 +5243,7 @@ public class StandardContext extends ContainerBase
             }
 
             // Load and initialize all "load on startup" servlets
-            // 初始化Servlets
+            // 初始化Servlets，只针对配置了loadOnStartup >= 的
             if (ok) {
                 if (!loadOnStartup(findChildren())){
                     log.error(sm.getString("standardContext.servletFail"));
